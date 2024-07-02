@@ -61,7 +61,7 @@ finally = {
 
 
 
-birdName <- xlSpe[1:5,1, drop = T]   #drop(boolean) drops table: left w/ only a vector 
+birdName <- xlSpe[1:4,1, drop = T]   #drop(boolean) drops table: left w/ only a vector 
 birdName <- gsub(" ", "%20",birdName)
 
 for (i in birdName){ 
@@ -93,13 +93,10 @@ for (i in 1:length(birdName)){
   for(i in 1:length(litType)){
     if (litType[i] == "article" | litType[i] == "review"){
       bodyRes<- rbind(bodyRes, literature)
-      bodyRes
+      bodyRes <- unique(bodyRes)
     }
   }
-  
 }
-
-
 
 
 
@@ -113,4 +110,27 @@ for (i in 1:length(birdName)){
 # review and article is ok type
 #dataset is not ok 
 
+#Outline & Plan
+#Purpose/Goal: Accelerate data collection for crb. Mark 1 or 0 or yes/no
+#and it's uncertainty, including the link to literature. 
+#Grab relevant links to literature that will contribute to this behavior. 
+#Another thing that may be useful is mark those with absolute known for
+#sure crb to mark that with a 1, w/o looking at literature. Does not have to
+#be for all of them, but for those w/ well known crb. 
+#Strategy: gather literature from OpenAlex. Make sure the literature 
+#is either an article or a review- not a dataset(occoruen dowload fail)
+#Steps: 
+#variables to look at: id, doi, display name, type(article/review)
+#is relevance score something to consider? If so, what percentage of relevancy 
+#is_oa: true
+#oa_status: accept anything (gold, green, bronze) do not accept "closed 
+#mark that as a double check to the is_oa (+ oa_status =! closed)
+#want to obtain oa_url
+#look at best_oa_location as well 
 
+#after considering those variables, you want to to write those links to 
+#into the excel sheet. Include a list of links to look at 
+#this may be a stretch, but looking at abstract_inverted_index and putting
+#them in the right order, look for words such as communal + roost and maybe 
+#if the species and the key words are w/i a 10 word limit, we may put it as 
+#a 1 for crb in the spreadsheet. 
