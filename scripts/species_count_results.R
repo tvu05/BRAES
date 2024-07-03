@@ -49,73 +49,65 @@ birdName <- gsub(" ", "%20",birdName)
 #creates empty data frame 
 bodyRes<- data.frame(NameSpecies = character(), Count = integer())
 
-
+test <- xlSpe$Species1[1:5]
+test
 
 for (i in 1:length(birdName)){
-  counter <- 0 
+  articleCount <- 0 
   #print(birdName[i])
   search <- paste0(url,selectedKeys,"&", abstSearch,birdName[i], "%20AND%20", roost)
   #print(search)
   request <- httr2::request(search)
   req_dry_run(request)
-  Sys.sleep(1) #pasuing in seconds #use to respect OpenAlex request limit 
+  Sys.sleep(0.15) #pasuing in seconds #use to respect OpenAlex request limit 
   resp <-req_perform(request)
   body <- fromJSON(rawToChar(resp$body))
   literature <- body$results
   litType <- literature$type
   
   resultsCount <- body$meta$count
+  species <- xlSpe$Species1[i]
+  print(species)
+
+
   if(resultsCount == 0){
-    species = species #xlSpe$Species1[i]
+    species <- species
     articleCount <- 0
+    bodyRes <- rbind(bodyRes, literature)
+    bodyRes <- rbind(bodyRes, articleCount)
+    
   }else if(resultsCount <= 25){
-    species = species 
-    counter <- 0
-    articleCount <- for each resultsCount 
-      if litType == article | review 
-    counter <- counter + 1
-  }else{  #more situations where results is greater than 25 
-    species = species 
-    counter <- 0 
-    pages = pages 
-    for each page{ 
-      articleCount <- for each resultsCount 
-      if litType == article | review 
-      counter <- counter + 1  
+    species <- species
+    
+    for(i in 1:length(litType)){
+      if (litType[i] == "article" | litType[i] == "review"){
+        bodyRes<- rbind(bodyRes, literature)
+        bodyRes <- unique(bodyRes)
+        articleCount <- articleCount + 1
+        bodyRes <- rbind(bodyRes, articleCount)
+        #print count into excel sheet column 
       }
-  }
-  per_page <- body$meta$per_page
-  totalNumPages <- ceiling(resultsCount/per_page)
-  
-  for(i in 1:length(litType)){
-    if (litType[i] == "article" | litType[i] == "review"){
-      bodyRes<- rbind(bodyRes, literature)
-      bodyRes <- unique(bodyRes)
-      counter <- counter + 1
-      #print count into excel sheet column 
+    }
+    
+  }else{  #more situations where results is greater than 25 
+    species <- species
+    per_page <- body$meta$per_page
+    totalNumPages <- ceiling(restultsCount/per_page)
+    
+    for (i in totalNumPages){ 
+      for(i in 1:length(litType)){
+        if (litType[i] == "article" | litType[i] == "review"){
+          bodyRes<- rbind(bodyRes, literature)
+          bodyRes <- unique(bodyRes)
+          articleCount <- articleCount + 1
+          bodyRes <- (bodyRes, articleCount)
+          #print count into excel sheet column 
+        }
+      } 
     }
   }
+  
   #cleanup function 
   rm(list = c("resp", "body", "literature", "litType", "request", "search"))
 }
 
-# 1. for each species in a list
-# 2. run a search for that species
-# 3. if the result set is 0 >
-#   4. record the species name and 0 to a df
-# 5. else, create a counter and set it to 0
-# 6. if the result set is 25 or less >
-#   7. find out how many articles there are and record this to the counter and write this to the df
-# 8. if the result is greater than 25 > 
-#   9. find out how many pages there and for each page >
-#   10. do line 4
-# 11. exit the loop
-
-
-#how to commit & push on gitbash 
-# ls -a 
-# git add *
-#git commit -m "message to push" 
-
-#I am testing on git desktop
-#testing after having closed github desktop
