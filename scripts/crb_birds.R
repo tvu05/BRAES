@@ -43,7 +43,7 @@ colnames(result) #gives column names of objects
 
 #loops
 #install.packages("readxl")
-xlSpe <- read_xlsx("Chapter_2_PhD_data_final.xlsx",
+xlSpe <- read_xlsx("data/Chapter_2_PhD_data_final.xlsx",
                           sheet= "Core Land birds") 
 #returning NA values --> handle them later 
 
