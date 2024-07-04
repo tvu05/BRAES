@@ -47,7 +47,18 @@ birdName <- gsub(" ", "%20",birdName)
 
 #build three different searches 
 #creates empty data frame 
-bodyRes<- data.frame(NameSpecies = character(), Count = integer())
+# bodyRes<- data.frame(NameSpecies = character(), Count = integer())
+# bodyRes <- rbind(bodyRes, NameSpecies = xlSpe$Species1[1], Count = 1)
+# bodyRes <- rbind(bodyRes, NameSpecies = "hello", Count = 43)
+
+
+
+bodyRes <- data.frame(NameSpecies = character(), Count = integer(), stringsAsFactors = FALSE)
+# bodyRes <- rbind(bodyRes, data.frame(NameSpecies = xlSpe$Species1[1], Count = 1, stringsAsFactors = FALSE))
+# bodyRes <- rbind(bodyRes, data.frame(NameSpecies = "hello", Count = 43, stringsAsFactors = FALSE))
+# print(bodyRes)
+
+
 
 test <- xlSpe$Species1[1:5]
 test
@@ -71,36 +82,34 @@ for (i in 1:length(birdName)){
 
 
   if(resultsCount == 0){
-    species <- species
+    #species <- species
     articleCount <- 0
-    bodyRes <- rbind(bodyRes, literature)
-    bodyRes <- rbind(bodyRes, articleCount)
-    
+    bodyRes <- rbind(bodyRes, data.frame(NameSpecies = species, Count = articleCount, stringsAsFactors = FALSE))
+
   }else if(resultsCount <= 25){
-    species <- species
+    #species <- species
     
-    for(i in 1:length(litType)){
-      if (litType[i] == "article" | litType[i] == "review"){
-        bodyRes<- rbind(bodyRes, literature)
+    for(j in 1:length(litType)){
+      if (litType[j] == "article" | litType[j] == "review"){
         bodyRes <- unique(bodyRes)
         articleCount <- articleCount + 1
-        bodyRes <- rbind(bodyRes, articleCount)
+        bodyRes <- rbind(bodyRes, data.frame(NameSpecies = species, Count = articleCount, stringsAsFactors = FALSE))
         #print count into excel sheet column 
       }
     }
     
   }else{  #more situations where results is greater than 25 
-    species <- species
+    #species <- species
     per_page <- body$meta$per_page
     totalNumPages <- ceiling(restultsCount/per_page)
     
-    for (i in totalNumPages){ 
-      for(i in 1:length(litType)){
-        if (litType[i] == "article" | litType[i] == "review"){
-          bodyRes<- rbind(bodyRes, literature)
+    for (j in totalNumPages){ 
+      for(k in 1:length(litType)){
+        if (litType[k] == "article" | litType[k] == "review"){
+          #bodyRes<- rbind(bodyRes, literature)
           bodyRes <- unique(bodyRes)
           articleCount <- articleCount + 1
-          bodyRes <- (bodyRes, articleCount)
+          bodyRes <- rbind(bodyRes, data.frame(NameSpecies = species, Count = articleCount, stringsAsFactors = FALSE))
           #print count into excel sheet column 
         }
       } 
@@ -110,4 +119,7 @@ for (i in 1:length(birdName)){
   #cleanup function 
   rm(list = c("resp", "body", "literature", "litType", "request", "search"))
 }
+
+#problem: bodyRes dataframe is not recording all the species name. only seems to be recording one species and they have 
+#different count...? I need to record firs five species and the count of relevant articles. 
 

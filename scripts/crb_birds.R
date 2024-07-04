@@ -61,7 +61,7 @@ finally = {
 
 
 
-birdName <- xlSpe[1:4,1, drop = T]   #drop(boolean) drops table: left w/ only a vector 
+birdName <- xlSpe[2:2,1, drop = T]   #drop(boolean) drops table: left w/ only a vector 
 birdName <- gsub(" ", "%20",birdName)
 
 for (i in birdName){ 
@@ -85,7 +85,7 @@ for (i in 1:length(birdName)){
   #print(search)
   request <- httr2::request(search)
   req_dry_run(request)
-  Sys.sleep(1) #pasuing in seconds #use to respect OpenAlex request limit 
+  Sys.sleep(0.5) #pasuing in seconds #use to respect OpenAlex request limit 
   resp <-req_perform(request)
   body <- fromJSON(rawToChar(resp$body))
   literature <- body$results
@@ -97,6 +97,8 @@ for (i in 1:length(birdName)){
     }
   }
 }
+
+
 
 
 
