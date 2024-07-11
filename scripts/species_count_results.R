@@ -123,3 +123,4 @@ for (i in 1:length(birdName)){
 #problem: bodyRes dataframe is not recording all the species name. only seems to be recording one species and they have 
 #different count...? I need to record firs five species and the count of relevant articles. 
 
+#update
