@@ -88,6 +88,7 @@ execute_search <- function(data, delay){
   search_limit <- 100000
   # Define the start time
   startTime <- Sys.time()
+  daysRun <- 0 # set day counter
   
   # prepare a vector to hold the count data
   count_of_articles <- vector(mode = "numeric", length = length(data))
@@ -98,7 +99,6 @@ execute_search <- function(data, delay){
     cat(paste("performing request number", requestCounter, "\n"))
     now <- Sys.time()
     elapsedTime <- now - startTime # total elapsed time
-    daysRun <- 0 # set day counter
     twentyFourHourLimitCheck <- elapsedTime - daysRun * 86400  # resetable time
     cat(paste("I've been running for", round(elapsedTime), "seconds.\n"))
     # if we've hit our search limit in less than 24 hours
