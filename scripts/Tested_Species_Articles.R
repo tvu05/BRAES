@@ -89,6 +89,7 @@ execute_search <- function(data, delay){
   # Define the start time
   startTime <- Sys.time()
   daysRun <- 0 # set day counter
+  waitTime <- 86400
   
   # prepare a vector to hold the count data
   count_of_articles <- vector(mode = "numeric", length = length(data))
@@ -107,8 +108,7 @@ execute_search <- function(data, delay){
     if(requestCounter == search_limit & twentyFourHourLimitCheck < 86400){
       requestCounter <- 0
       daysRun = daysRun + 1
-      waitTime <- 86400 - elapsedTime
-      cat(paste("Rate limit hit. Pausing for", waitTime, "seconds.\n"))
+      cat(paste("Rate limit hit. Pausing for 24 hours.\n"))
       cat(paste("I have been running for", daysRun, ".\n"))
       Sys.sleep(waitTime)
     } else {
