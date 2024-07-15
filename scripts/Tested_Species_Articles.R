@@ -1,6 +1,6 @@
 ####
 # Created: 2024-07-09
-# Updated: 2024-07-11
+# Updated: 2024-07-15
 # 
 # Author: Mathew Vis-Dunbar
 # 
@@ -62,12 +62,14 @@ selectedKeys <- "select=type"
 abstSearch <- "filter=title_and_abstract.search:"
 # roost terms
 roostTerms <- "(roost%20OR%20roosting%20OR%20communally%20OR%20communal)"
+email <- "mathew.vis-dunbar@ubc.ca"
 
 ###
 # BUILD THE SEARCH FUNCTION
 ###
-build_Search <- function(url, selectedKeys, abstSearch, birdName, roostTerms, pageNumber){
-  search <- paste0(url,selectedKeys,"&", abstSearch, birdName, "%20AND%20", roostTerms, "&", "page=", pageNumber)
+build_Search <- function(url, selectedKeys, abstSearch, birdName, roostTerms, pageNumber, email){
+  search <- paste0(url,selectedKeys,"&", abstSearch, birdName, "%20AND%20", roostTerms, "&", "page=", pageNumber, "&mailto=", email)
+  cat(paste0(search, "\n"))
   request <- httr2::request(search)
   resp <-req_perform(request)
   body <- fromJSON(rawToChar(resp$body))
@@ -80,7 +82,7 @@ build_Search <- function(url, selectedKeys, abstSearch, birdName, roostTerms, pa
 # data is a vector of species names
 # delay is the throttle in seconds between queries
 execute_search <- function(data, delay){
-  #creating a counter to see if it exceeds the rate limit. 
+  # creating a counter to see if it exceeds the rate limit. 
   # Initialize counter and timestamp
   # Define the start of the counter
   requestCounter <- 0
@@ -90,10 +92,9 @@ execute_search <- function(data, delay){
   startTime <- Sys.time()
   daysRun <- 0 # set day counter
   waitTime <- 86400
-  
   # prepare a vector to hold the count data
   count_of_articles <- vector(mode = "numeric", length = length(data))
-  
+  articleType <- "article|review|book-chapter" # what we're looking for
   # starting the loop...
   for(i in 1:length(data)){
     requestCounter <- requestCounter + 1
@@ -116,11 +117,8 @@ execute_search <- function(data, delay){
       cat(paste("Looking up", gsub("%20", " ", birdName), "\n"))
       pageNumber <- 1 # starting page number
       results_per_page <- 25 # default results per page
-      articleType <- "article|review|book-chapter" # what we're looking for
       #perform_search() # function counting the number of requests
-      
-      body <- build_Search(url, selectedKeys, abstSearch, birdName, roostTerms, pageNumber)
-      
+      body <- build_Search(url, selectedKeys, abstSearch, birdName, roostTerms, pageNumber, email)
       # parse the results
       meta_count <- body$meta$count # first count the number of results
       # then deal with tallying the count
@@ -129,13 +127,13 @@ execute_search <- function(data, delay){
         cat("No results found.\n")
       } else if (meta_count <= results_per_page) { # something is found, but only one page of results is returned
         returned_results <- length(grep(articleType, x = body$results$type)) # look in the type vector for values that match the article types of interest
-        cat(paste("1 page with", returned_results, "reulst(s) found.\n"))
+        cat(paste("1 page with", returned_results, "result(s) found.\n"))
       } else { # something is found, and more than one page of results is returned
         returned_results <- length(grep(articleType, x = body$results$type)) # number of results on page 1
         returned_pages <- ceiling(body$meta$count/results_per_page) # number of pages to cycle through
-        for(i in 2:(returned_pages)){
-          pageNumber <- i
-          body <- build_Search(url, selectedKeys, abstSearch, birdName, roostTerms, pageNumber)
+        for(j in 2:returned_pages){
+          pageNumber <- j
+          body <- build_Search(url, selectedKeys, abstSearch, birdName, roostTerms, pageNumber, email)
           results_on_page <- length(grep(articleType, x = body$results$type))
           returned_results <- returned_results + results_on_page # add each page of returned results together
           # hang tight
@@ -145,10 +143,12 @@ execute_search <- function(data, delay){
       }
       # update the count
       count_of_articles[i] <- returned_results
+      cat(paste0("Count of articles is ", count_of_articles[i], "\n"))
       # hang tight
       Sys.sleep(delay)
     }
   }
+  print(count_of_articles)
   return(count_of_articles)
   }
 
@@ -156,9 +156,9 @@ execute_search <- function(data, delay){
 # RUN THE EXECUTION FUNCTION
 ###
 
-results <- execute_search(speciesListTest, 1)
+results <- execute_search(speciesList, 0.2)
 
-df <- data.frame(Species = gsub("%20", " ", speciesListTest),
+df <- data.frame(Species = gsub("%20", " ", speciesList),
                       Results = results)
 
 write.csv(df, "outputs/output.csv", row.names = FALSE)
