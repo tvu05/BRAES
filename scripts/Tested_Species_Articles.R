@@ -62,7 +62,7 @@ selectedKeys <- "select=type"
 abstSearch <- "filter=title_and_abstract.search:"
 # roost terms
 roostTerms <- "(roost%20OR%20roosting%20OR%20communally%20OR%20communal)"
-email <- "mathew.vis-dunbar@ubc.ca"
+email <- ""
 
 ###
 # BUILD THE SEARCH FUNCTION
