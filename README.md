@@ -13,4 +13,19 @@ IMPORTANT: Never publicly release your API Key, this includes uploading it to th
 
 * Go to [https://dev.elsevier.com/](https://dev.elsevier.com/) and select 'I want an API Key'. You should be promptd to log in with your CWL, if you're on a UBC network, or simply create an account with your @ubc email address.
 * You'll want to use the [Scopus Search API](https://dev.elsevier.com/documentation/ScopusSearchAPI.wadl)
+* And refer to [this documentation](https://dev.elsevier.com/sc_search_tips.html) for building the search
 
+**Sample Query**
+
+You can plug this into your web browser:
+
+```{r}
+base_url <- "https://api.elsevier.com/content/search/scopus?"
+query <- "TITLE-ABS-KEY('Accipiter%20badius'%20AND%20(roost%20OR%20roosting%20OR%20communally%20OR%20communal))"
+apiKey <- "YOUR API KEY"
+
+search <- paste0(base_url, "query=", query, "&apiKey=", apiKey)
+search
+```
+
+You'll see the results returned at the top. You can then use the same packages/functions as in OpenAlex, to build this query in R, and extract the relevant data.
