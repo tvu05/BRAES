@@ -34,6 +34,6 @@ You'll see the results returned at the top. You can then use the same packages/f
 
 ## Wikipedia
 
-I have uploaded a sample Python notebook that loads the requests module (for retrieving html requests) and BeautifulSoup (for parsing html), has one query and stores the output in a BeautifulSoup object. You can the refer to the [BeautifulSoup documentation](https://beautiful-soup-4.readthedocs.io/en/latest/) for navigating the page. This is often helped by starting with you web browsers 'inspect' feature to figure out where the data that you want is located.
+I have uploaded a sample Python notebook `wikipedia-scrape.ipynb` that loads the requests module (for retrieving html requests) and BeautifulSoup (for parsing html), has one query and stores the output in a BeautifulSoup object. You can the refer to the [BeautifulSoup documentation](https://beautiful-soup-4.readthedocs.io/en/latest/) for navigating the page. This is often helped by starting with you web browsers 'inspect' feature to figure out where the data that you want is located.
 
 Once you're comfortable with one page, and know what you need to identify before deciding that it's to be included, you can start building some loops.
