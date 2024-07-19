@@ -14,7 +14,7 @@ IMPORTANT: Never publicly release your API Key, this includes uploading it to th
 * Go to [https://dev.elsevier.com/](https://dev.elsevier.com/) and select 'I want an API Key'. You should be promptd to log in with your CWL, if you're on a UBC network, or simply create an account with your @ubc email address.
 * You'll want to use the [Scopus Search API](https://dev.elsevier.com/documentation/ScopusSearchAPI.wadl)
 * And refer to [this documentation](https://dev.elsevier.com/sc_search_tips.html) for building the search.
-* And [this documentation](https://dev.elsevier.com/api_key_settings.html), under the header 'Scopus APIs', for rate throttling (9 per second, daily max of 20 000)
+* And [this documentation](https://dev.elsevier.com/api_key_settings.html), under the header 'Scopus APIs', for rate throttling (9 per second, weekly max of 20 000)
 * Check out the GUI for [Scopus](https://resources.library.ubc.ca/page.php?details=scopus&id=2753)
 
 **Sample Query**
