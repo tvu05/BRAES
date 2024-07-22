@@ -1,5 +1,6 @@
 #Author: Thien-Nhi Vu 
 #Date Created: 7/21/24
+#New CHange 7/22 923 AM 
 
 # Sample working script that queries Scopus API
 # for a list of bird names and associated roost terms
