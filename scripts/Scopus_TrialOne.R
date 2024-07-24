@@ -1,6 +1,5 @@
 #Author: Thien-Nhi Vu 
 #Date Created: 7/21/24
-#New CHange 7/22 923 AM 
 
 # Sample working script that queries Scopus API
 # for a list of bird names and associated roost terms
@@ -44,11 +43,19 @@ roostTerms <- "'%20AND%20(roost%20OR%20roosting%20OR%20communally%20OR%20communa
 apiKey <- "API"
 
 build_Search <- function(url, query_TAK, birdName, roostTerms, apiKey){
-  search <- paste0(url, query_TAK, "Pica%20Pica%20",roostTerms, apiKey)
+  search <- paste0(url, query_TAK, "Accipiter%20albogularis",roostTerms, apiKey)
   request <- httr2::request(search)
   resp <-req_perform(request)
   body <- fromJSON(rawToChar(resp$body))
   countResults <- body$`search-results`$`opensearch:totalResults`
   return(countResults)
+}
+
+
+birdName <- xlSpe[1:4,1, drop = T]   #drop(boolean) drops table: left w/ only a vector 
+birdName <- gsub(" ", "%20",birdName)
+
+for(i in length(birdName)){
+  print(birdName)
 }
 

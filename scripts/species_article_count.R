@@ -29,7 +29,7 @@ roostTerms <- "(roost%20OR%20roosting%20OR%20communally%20OR%20communal)"
 xlSpe <- read_xlsx("data/Chapter_2_PhD_data_final.xlsx",
                            sheet= "Core Land birds")
 # subset the data
-speciesList <- xlSpe[1:40,1, drop = T] # testing with the first 40 birds
+speciesList <- xlSpe[1:4,1, drop = T] # testing with the first 40 birds
 # replace spaces with encoding
 speciesList <- gsub(" ", "%20",speciesList)
 
