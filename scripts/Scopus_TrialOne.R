@@ -16,6 +16,7 @@ library(readxl)
 ###
 
 #fix warning with read_xls argument to have a blank space and NA
+
 xlSpe <- read_xlsx("data/Chapter_2_PhD_data_final.xlsx",
                    sheet= "Core Land birds",
                    na = c("", " ", "NA"))
@@ -27,7 +28,7 @@ rm(xlSpe)
 birdName <- gsub(" ", "%20",speciesList)
 # subset the data for testing
 # DELETE WHEN TESTING WORKS
-birdName <- birdName[1:8374]
+birdName <- birdName[1:2]
 print(birdName)
 
 
