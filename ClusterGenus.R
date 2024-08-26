@@ -172,7 +172,7 @@ hist(sub1kWord$NumWords[which(test$cluster == 3)],
 #sub10Ref$NumReferencese[which(test$cluster == 3)]
 
 #############
-
+#test
 #end 
 
 sample <- subset(data, NumWords <= 1000 & NumChar <= 5000 & NumReferences <= 10)
