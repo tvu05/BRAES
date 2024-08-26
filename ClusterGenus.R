@@ -66,6 +66,118 @@ ggplot(speciesData, aes(x= groupedNumChar)) +
   geom_bar()
 
 
+########
+
+
+ggplot(data, aes(x = NumWords)) + 
+  geom_bar()
+
+##### 
+#this area is for numchar less than 5000 
+sub5k <- subset(data, NumChar <= 5000)
+
+ggplot(sub5k, aes(x = NumChar)) + 
+  geom_bar()
+
+
+sub5k <- sub5k %>% mutate(groupedNumChar =
+                                        case_when(NumChar <= 500 ~ 500,
+                                                  NumChar <= 1000 ~ 1000,
+                                                  NumChar <= 1500 ~ 1500,
+                                                  NumChar <= 2000 ~ 2000,
+                                                  NumChar <= 2500 ~ 2500,
+                                                  NumChar <= 3000 ~ 3000,
+                                                  NumChar <= 3500 ~ 3500,
+                                                  NumChar <= 4000 ~ 4000,
+                                                  NumChar <= 4500 ~ 4500,
+                                                  NumChar <= 5000 ~ 5000,
+                                                  .default = 5550))
+
+ggplot(sub5k, aes(x= groupedNumChar)) + 
+  geom_bar()
+
+
+test <- kmeans(sub5k$NumChar, 3)
+test$cluster
+
+hist(sub5k$NumChar[which(test$cluster == 1)], main = 
+    "Hist of sub5k Cluster 1")
+hist(sub5k$NumChar[which(test$cluster == 2)],  main = 
+       "Hist of sub5k Cluster 2")
+hist(sub5k$NumChar[which(test$cluster == 3)], 
+     main = "Hist of sub5k Cluster 3")
+
+#Cluster 1 lacks information
+#Cluster 2 is a gray area (up to Sandra to decide)
+#Cluster 3 is enough information 
+#Here are the list of species in cluster 1,2,3
+#sub5k$SpeciesName[which(test$cluster == 1)]
+#sub5k$SpeciesName[which(test$cluster == 2)]
+#sub5k$SpeciesName[which(test$cluster == 3)]
+#
+
+#############
+#this area is for numchar less than 10
+sub10Ref <- subset(data, NumReferences <= 10)
+
+ggplot(sub10Ref, aes(x = NumReferences)) + 
+  geom_bar()
+
+
+
+test <- kmeans(sub10Ref$NumReferences, 3)
+test$cluster
+
+hist(sub10Ref$NumReferences[which(test$cluster == 1)], main = 
+       "Hist of sub10Ref Cluster 1")
+hist(sub10Ref$NumReferences[which(test$cluster == 2)],  main = 
+       "Hist of sub10Ref Cluster 2")
+hist(sub10Ref$NumReferences[which(test$cluster == 3)], 
+     main = "Hist of sub10Ref Cluster 3")
+
+#Cluster 1 lacks information
+#Cluster 2 is a gray area (up to Sandra to decide)
+#Cluster 3 is enough information 
+#Here are the list of species in cluster 1,2,3
+#sub10Ref$NumReferences[which(test$cluster == 1)]
+#sub10Ref$NumReferences[which(test$cluster == 2)]
+#sub10Ref$NumReferencese[which(test$cluster == 3)]
+#
+
+##########
+#this area is for numWords less than 1000
+sub1kWord <- subset(data, NumWords <= 1000)
+
+ggplot(sub1kWord, aes(x = NumWords)) + 
+  geom_bar()
+
+
+
+test <- kmeans(sub1kWord$NumWords, 3)
+test$cluster
+
+hist(sub1kWord$NumWords[which(test$cluster == 1)], main = 
+       "Hist of sub1kWords Cluster 1")
+hist(sub1kWord$NumWords[which(test$cluster == 2)],  main = 
+       "Hist of sub1kWords Cluster 2")
+hist(sub1kWord$NumWords[which(test$cluster == 3)], 
+     main = "Hist of sub1kWords Cluster 3")
+
+#Cluster 1 lacks information
+#Cluster 2 is a gray area (up to Sandra to decide)
+#Cluster 3 is enough information 
+#Here are the list of species in cluster 1,2,3
+#sub10Ref$NumReferences[which(test$cluster == 1)]
+#sub10Ref$NumReferences[which(test$cluster == 2)]
+#sub10Ref$NumReferencese[which(test$cluster == 3)]
+
+#############
+
+#end 
+
+sample <- subset(data, NumWords <= 1000 & NumChar <= 5000 & NumReferences <= 10)
+
+
 #species & genus level 
 # numChar, numRef, numWords
 # find wiki articles w/ 1000, 2000 characters
